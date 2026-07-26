@@ -1,2 +1,2 @@
 # ENV
-**Rudimentary 3d rendering library built in SDL**
+**Rudimentary 3d rendering and movement library built in SDL**
