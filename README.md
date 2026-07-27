@@ -15,9 +15,10 @@ I went with option 3. There's more to learn from by calculating the 3d-projectio
 linear matrix transformations directly. Granted - I admit in full sincerity - the hardware
 API can probably perform these things far more efficiently.
 
-## Struct-Based translation units, dynamic memory, and data management
+## Struct-Based Translation Units, Dynamic Memory, and Data Management
 ## Coordinate Conversions
-## 3D Perspective projection
+## 3D Perspective Projection
+## Translations and Rotations
 ## Line Interpolation
 ## Going Forward
 
