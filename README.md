@@ -18,7 +18,7 @@ API can probably perform these things far more efficiently.
 ## Struct-Based Translation Units, Dynamic Memory, and Data Management
 ## Coordinate Conversions
 ## 3D Perspective Projection
-## Translations and Rotations
+## Linear Translations and Rotations
 ## Line Interpolation
 ## Going Forward
 
