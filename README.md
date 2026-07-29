@@ -1,8 +1,8 @@
 # ENV
 **Rudimentary 3d rendering and movement library built in SDL3**
 
-I've been interested in building 3-dimensional worlds for people to fly around and explore 
-in, using C. I decided to go with a relatively simple library: SDL3. However, SDL3 does
+I've been interested in building 3-dimensional worlds, using C, for people to fly around 
+and explore in. I decided to go with a relatively simple library: SDL3. However, SDL3 does
 not support 3d rendering natively without importing a GPU abstraction layer.
 
 Thus, I am stuck with 3 options:
@@ -16,6 +16,20 @@ linear matrix transformations directly. Granted - I admit in full sincerity - th
 API can probably perform these things far more efficiently.
 
 ## Struct-Based Translation Units, Dynamic Memory, and Data Management
+
+ENV, short for Environment, is the name of the struct that holds all the data used at the
+core of the graphics library. This makes it easier to create functions that work on many
+different areas of the application at once without having to pass a long list of 
+arguments. 
+
+The members of ENV:
+
+* The SDL window, rendering, and event contexts
+* A boolean array to track key-presses 
+* Another struct `pnt`, short for point, which holds the 3D point-position data
+* Floating point step variables that define the speed of translational and angular
+  movement
+
 ## Coordinate Conversions
 ## 3D Perspective Projection
 ## Linear Translations and Rotations
