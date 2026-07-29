@@ -15,6 +15,13 @@ I went with option 3. There's more to learn from by calculating the 3d-projectio
 linear matrix transformations directly. Granted - I admit in full sincerity - the hardware
 API can probably perform these things far more efficiently.
 
+## Dependencies
+
+* A C compiler
+* SDL3
+
+## Usage
+
 ## Struct-Based Translation Units, Dynamic Memory, and Data Management
 
 ENV, short for Environment, is the name of the struct that holds all the data used at the
@@ -22,13 +29,17 @@ core of the graphics library. This makes it easier to create functions that work
 different areas of the application at once without having to pass a long list of 
 arguments. 
 
-The members of ENV:
+The members of `Env`:
 
 * The SDL window, rendering, and event contexts
 * A boolean array to track key-presses 
 * Another struct `pnt`, short for point, which holds the 3D point-position data
 * Floating point step variables that define the speed of translational and angular
   movement
+* A boolean variable used as a condition for the application's persistence in the main
+  polling/rendering loop
+
+Functions of `env.c`:
 
 ## Coordinate Conversions
 ## 3D Perspective Projection
