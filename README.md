@@ -24,11 +24,11 @@ API can probably perform these things far more efficiently.
 
 Link your `main()` file with `env.c`, `pnt.c`, the `SDL3` library and the `math` library
 when compiling your program. An example build, using `cube_dimension.c` as our entry 
-point is compilied using the command outlined in this repository's `Makefile`:
+point, is compilied using the command outlined in this repository's `Makefile`:
 
 ```
-main: cube_dimension.c env.c env.h pnt.c pnt.h
-        cc cube_dimension.c env.c pnt.c -lSDL3 -lm -o cube_dimension
+cc cube_dimension.c env.c pnt.c -lSDL3 -lm -o cube_dimension
+
 ```
 
 ## Struct-Based Translation Units, Dynamic Memory, and Data Management
