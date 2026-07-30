@@ -52,6 +52,15 @@ A simple breakdown of how to setup and build your environment goes as follows:
        refer to these units as "screen units")
     6. The amount of space rotated along any given axis during each cycle of rotational
        movement in the poll/render loop in units of TAU
+  
+  Keyboard inputs for spacial translation and rotation can be accessed and modified in
+  the `scanKeys()` function in `env.c`.
+
+  The amount of space your step movements cover in your environment is tied to the
+  frequency of your poll/render loop. As the amount of points in your environment grows,
+  the frequency of your loop slows because of the increased amount of calculations 
+  done per render cycle. You can increase the size of your step movements to account
+  for longer render cycles.
 
 ## Struct-Based Translation Units, Dynamic Memory, and Data Management
 
