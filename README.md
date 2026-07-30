@@ -56,11 +56,11 @@ A simple breakdown of how to setup and build your environment goes as follows:
   Keyboard inputs for spacial translation and rotation can be accessed and modified in
   the `scanKeys()` function in `env.c`.
 
-  The amount of space your step movements cover in your environment is tied to the
-  frequency of your poll/render loop. As the amount of points in your environment grows,
-  the frequency of your loop slows because of the increased amount of calculations 
-  done per render cycle. You can increase the size of your step movements to account
-  for longer render cycles.
+  The amount of space your step movements cover in your environment over a given period
+  of time is tied to the frequency of your poll/render loop. As the amount of points in 
+  your environment grows, the frequency of your loop slows because of the increased 
+  amount of calculations done per render cycle. You can increase the size of your step 
+  movements to account for longer render cycles.
 
 ## Struct-Based Translation Units, Dynamic Memory, and Data Management
 
