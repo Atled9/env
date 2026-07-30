@@ -31,11 +31,27 @@ cc cube_dimension.c env.c pnt.c -lSDL3 -lm -o cube_dimension
 ```
 A set of currently-available functions can be found in `env.h`. Make sure that these
 function prototypes, as well as the associated opaque struct, are included in your own
-file(s). 
+file(s). We can accomplish this at the preprocessing stage.
 
 ```
 #include "env.h"
 ```
+A simple breakdown of how to setup and build your environment goes as follows:
+
+* Create an instance of your environment using `initEnv()`, which takes in six
+  arguments:
+    1. A pointer to a null-terminated character array to be used as your window title.
+       Keep in mind, string literals are implicitly null-terminated.
+    2. The width of your window in pixels
+    3. The height of your window in pixels
+    4. The Field of View in units of TAU radians, that is, in units of 2 * PI radians
+       (For instance, 90 degrees = 0.25 TAU radians)
+    5. The amount of space translated along the z-axis during each cycle of forward
+       movement in the poll/render loop in units of the distance between the center of 
+       your window and the top or bottom edge of your window (going forward, I will
+       refer to these units as "screen units")
+    6. The amount of space rotated along any given axis during each cycle of rotational
+       movement in the poll/render loop in units of TAU
 
 ## Struct-Based Translation Units, Dynamic Memory, and Data Management
 
