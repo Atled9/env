@@ -28,7 +28,6 @@ point, is compilied using the command outlined in this repository's `Makefile`:
 
 ```
 cc cube_dimension.c env.c pnt.c -lSDL3 -lm -o cube_dimension
-
 ```
 
 ## Struct-Based Translation Units, Dynamic Memory, and Data Management
