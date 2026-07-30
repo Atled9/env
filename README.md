@@ -22,12 +22,19 @@ API can probably perform these things far more efficiently.
 
 ## Usage
 
-Link your `main()` file with `env.c`, `pnt.c`, the `SDL3` library and the `math` library
+Link your own file(s) with `env.c`, `pnt.c`, the `SDL3` library and the `math` library
 when compiling your program. An example build, using `cube_dimension.c` as our entry 
 point, is compilied using the command outlined in this repository's `Makefile`:
 
 ```
 cc cube_dimension.c env.c pnt.c -lSDL3 -lm -o cube_dimension
+```
+A set of currently-available functions can be found in `env.h`. Make sure that these
+function prototypes, as well as the associated opaque struct, are included in your own
+file(s). 
+
+```
+#include "env.h"
 ```
 
 ## Struct-Based Translation Units, Dynamic Memory, and Data Management
