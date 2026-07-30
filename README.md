@@ -68,7 +68,7 @@ A simple breakdown of how to setup and build your environment goes as follows:
 * Use `running()` as the condition for your poll/render loop to track when your program
   closes
 
-* call `pollEnv()` and `showEnv()` inside the poll/render loop.
+* Call `pollEnv()` and `showEnv()` inside the poll/render loop.
 
 * Use `addPoint()` to add a point to your 3D environment
 
