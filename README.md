@@ -62,6 +62,20 @@ A simple breakdown of how to setup and build your environment goes as follows:
   amount of calculations done per render cycle. You can increase the size of your step 
   movements to account for longer render cycles.
 
+* Destroy environment and free heap-allocated memory using `freeEnv()`. This must be done
+  before your program ends
+
+* Use `running()` as the condition for your poll/render loop to track when your program
+  closes
+
+* call `pollEnv()` and `showEnv()` inside the poll/render loop.
+
+* Use `addPoint()` to add a point to your 3D environment
+
+* Use `addLine()` to add a line between two points to your 3D environment
+
+* Use `addCube()` to add a cube to your environment
+
 ## Struct-Based Translation Units, Dynamic Memory, and Data Management
 
 ENV, short for Environment, is the name of the struct that holds all the data used at the
