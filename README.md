@@ -51,10 +51,12 @@ A simple breakdown of how to setup and build your environment goes as follows:
        your window and the top or bottom edge of your window (going forward, I will
        refer to these units as "screen units")
     6. The amount of space rotated along any given axis during each cycle of rotational
-       movement in the poll/render loop in units of TAU
+       movement in the poll/render loop in units of TAU radians
   
   Keyboard inputs for spacial translation and rotation can be accessed and modified in
-  the `scanKeys()` function in `env.c`.
+  the `scanKeys()` function in `env.c`. 'F' is forward, 'D' is backward, 'H' is roll left,
+  'L' is roll right, 'J' is pitch up, 'K' is pitch down, 'Z' is yaw left, 'X' is yaw 
+  right.
 
   The amount of space your step movements cover in your environment over a given period
   of time is tied to the frequency of your poll/render loop. As the amount of points in 
@@ -76,6 +78,11 @@ A simple breakdown of how to setup and build your environment goes as follows:
 
 * Use `addCube()` to add a cube to your environment
 
+I built this library to be mutable and scalable because I plan to expand on it.
+I suspect that anyone interested would want to do more than render a few points, 
+lines or cubes. So, if you're interested in reading on, I'll explain the details of 
+Env so that you can expand and modify it to your heart's content.
+
 ## Struct-Based Translation Units, Dynamic Memory, and Data Management
 
 ENV, short for Environment, is the name of the struct that holds all the data used at the
@@ -93,9 +100,46 @@ The members of `Env`:
 * A boolean variable used as a condition for the application's persistence in the main
   polling/rendering loop
 
-Functions of `env.c`:
+Env and the data that it holds is heap-allocated at initialization. This allows the
+rendering data to persist beyond the scope of initialization. I can pass an instance
+of Env to another translation unit without placing the entire struct definition in 
+`env.h`, preserving encapsulation.
+
+The rest of `env.c` can work with SDL-specific functionality in `Env` and leave
+the other translation units to do separate tasks.
+
+Env uses a separate struct, `Pnt`, which is maintained in a separate translation unit,
+`pnt.c`. Much line Env, Pnt is also heap-allocated and opaque to all other translation
+units.
+
+Pnt uses the standard `math` library to handle linear transformations and the
+movement of points in 3-dimensional space. Pnt doesn't have any access to SDL, but it
+maintains and calculates changes in a dynamic array of points whose values are passed 
+back to `env.c` for rendering.
+
+An instance of Pnt holds a pointer to an array of `Vec3` structs, each of which defines
+a location in 3D space. Data is added to this array dynamically at runtime. The behavior
+of `Pnt` is similar to that of `Vector` in C++. When size is at capacity and another
+point is pushed in `pushPnt()`, capacity doubles.
+
+At each cycle of the rendering loop, Pnt passes the value of each of its coordinates
+to Env, which is then passed to `SDL_RenderPoint()` in `showEnv()`. Some functionality
+is passed directly through Env to Pnt such as in `addPoint()` and `addLine()`. Other
+functionality is only passed to Env, such as the keypress handling in the private
+function `scanKeys()`.
+
+In order to go in depth about the Pnt struct and the dance of data between Pnt and Env,
+I need to cover the mathematics behind 3d rendering. The next few sections will give us
+a full understanding of how the library works.
 
 ## Coordinate Conversions
+
+`showEnv()` iterates over the coordinate data of every point in `Pnt` using `getX()` and
+`getY()`. Each coordinate is placed in `SDL_RenderPoint()`. However, the way that we
+place coordinates and the way that Pnt uses coordinates is not the same way that SDL
+uses coordinates. Consider the following planes within the window screen.
+
+
 ## 3D Perspective Projection
 ## Linear Translations and Rotations
 ## Line Interpolation
