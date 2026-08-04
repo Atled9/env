@@ -137,7 +137,7 @@ a full understanding of how the library works.
 `showEnv()` iterates over the coordinate data of every point in `Pnt` using `getX()` and
 `getY()`. Each coordinate is placed in `SDL_RenderPoint()`. However, the way that we
 place coordinates and the way that Pnt uses coordinates is not the same way that SDL
-uses coordinates. Consider the following planes within the window screen.
+uses coordinates. Consider the following planes that represent the window screen.
 
 
 ## 3D Perspective Projection
