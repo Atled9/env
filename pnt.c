@@ -54,16 +54,16 @@ float getX(Pnt *pnt, size_t ind)
 	if ((pnt->p + ind)->z < pnt->zfl) {
 		return 1e4; /* return x-coord beyond screen if point is behind viewport */
 	}
-	float x_adj = (pnt->p + ind)->x * pnt->zfl * pnt->yorig / (pnt->p + ind)->z;
-	return x_adj + pnt->xorig;
+	float x_2D = (pnt->p + ind)->x * pnt->zfl / (pnt->p + ind)->z;
+	return x_2D * pnt->yorig + pnt->xorig;
 }
 float getY(Pnt *pnt, size_t ind)
 {
 	if ((pnt->p + ind)->z < pnt->zfl) {
 		return 1e4; /* return y-coord beyond screen if point is behind viewport */
 	}
-	float y_adj = (pnt->p + ind)->y * pnt->zfl * pnt->yorig / (pnt->p + ind)->z;
-	return -y_adj + pnt->yorig; /* make y increase going up the screen */
+	float y_2D = (pnt->p + ind)->y * pnt->zfl / (pnt->p + ind)->z;
+	return -y_2D * pnt->yorig + pnt->yorig; /* make y increase going up the screen */
 }
 
 void ztrans(Pnt *pnt, float dz)
