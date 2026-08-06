@@ -143,8 +143,14 @@ uses coordinates. Consider the following planes that represent the window screen
 ![SDL px coor conversion pg 2](./images_for_README/coor-1.png)
 ![SDL px coor conversion pg 3](./images_for_README/coor-2.png)
 
-The return statements of `getX()` and `getY()` implement the component-form solutions,
+The return statements of `getX()` and `getY()` implement the component-form solutions
 X_sdl and Y_sdl, respectively.
+
+```
+return x_2D * pnt->yorig + pnt->xorig;
+```
+return -y_2D * pnt->yorig + pnt->yorig; /* make y increase going up the screen */
+```
 
 ## 3D Perspective Projection
 ## Linear Translations and Rotations
