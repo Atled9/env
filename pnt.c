@@ -55,7 +55,7 @@ float getX(Pnt *pnt, size_t ind)
 		return 1e4; /* return x-coord beyond screen if point is behind viewport */
 	}
 	float x_2D = (pnt->p + ind)->x * pnt->zfl / (pnt->p + ind)->z;
-	return x_2D * pnt->yorig + pnt->xorig;
+	return pnt->yorig * x_2D + pnt->xorig;
 }
 float getY(Pnt *pnt, size_t ind)
 {
@@ -63,7 +63,7 @@ float getY(Pnt *pnt, size_t ind)
 		return 1e4; /* return y-coord beyond screen if point is behind viewport */
 	}
 	float y_2D = (pnt->p + ind)->y * pnt->zfl / (pnt->p + ind)->z;
-	return -y_2D * pnt->yorig + pnt->yorig; /* make y increase going up the screen */
+	return -pnt->yorig * y_2D + pnt->yorig;
 }
 
 void ztrans(Pnt *pnt, float dz)
