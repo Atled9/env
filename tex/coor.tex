@@ -1,0 +1,90 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\usepackage{pgfplots}
+\parindent 0px
+
+\pgfplotsset{compat=1.18, width=12cm}
+
+\begin{document}
+
+\section{SDL Pixel Coordinates}
+
+Let us consider a graph that represents the application window.\\
+In our example, the screen has a 16 by 9 aspect ratio with pixel\\
+dimensions of $W=1024px, H=576px$.\\[5pt]
+
+\begin{tikzpicture}
+\begin{axis}[y dir=reverse, axis x line=box, xtick pos=upper, xmin=0, xmax=1024, ymin=0, ymax=576]
+\addplot[only marks] coordinates{(0, 0)};
+\end{axis}
+\end{tikzpicture}
+\\
+
+This is how SDL sees the window. Notice how the origin sits in the\\
+upper-left corner of the screen. Y-values go higher as we travel \\
+down the screen.\\
+
+\rule{12cm}{0.4pt}
+\\
+
+Now, let us consider the application window using our 2D coordinate\\
+system\\
+
+\begin{tikzpicture}
+\begin{axis}[axis x line=box, xmin=-1.778, xmax=1.778, ymin=-1, ymax=1]
+\addplot[only marks] coordinates{(0, 0)};
+\addplot[color=black] {0};
+\draw[] (0,-1)--(0,1);
+\end{axis}
+\end{tikzpicture}
+\\
+
+The origin now sits in the center of the screen, and Y-values go higher\\
+as we travel up the axis. Additionally, note the change in units.\\
+One "screen unit" is the distance between the center and the top or\\
+bottom of the screen. In this example, our screen has a $16:9$ aspect\\
+ratio, which gives our X-values the following range:\\
+
+$$\left\{ x \in \mathbb{R} \left| -\frac{16}{9} \leq x \leq \frac{16}{9} \right. \right\}$$
+\\
+
+We can replace $\frac{16}{9}$ with any other aspect ratio when working with\\
+different windows.\\
+
+\rule{12cm}{0.4pt}
+\\
+
+To translate a point in our 2D coordinate system to a point in\\
+SDL Pixel Coordinates, consider the following analysis:\\
+
+Let $\vec{P_{2D}}$ be any given point in our 2D coordinate system.\\
+Let $\vec{P_{sdl}}$ be any given point in SDL pixel coordinates.\\
+Let $\vec{P_{orig}}=\begin{bmatrix} X_{orig}\\  Y_{orig} \end{bmatrix}$ be the center of our application window in\\ 
+SDL pixel coordinates, where\\
+
+$$X_{orig} = \frac{W}{2}$$
+and
+$$Y_{orig} = \frac{H}{2}.$$
+\\
+
+The coordinate conversion between a point $\vec{P_{2D}}$ and the same point $\vec{P_{sdl}}$\\
+can be described by the affine transformation
+
+$$ \mathbf{C}\vec{P_{2D}} + \vec{P_{orig}} = \vec{P_{sdl}}$$
+where
+$$ \mathbf{C}= \begin{bmatrix} Y_{orig} &    0 \\
+                                   0     & -Y_{orig} \end{bmatrix}$$
+\\
+is our coordinate conversion matrix. We can take the expanded expression,
+
+$$ \begin{bmatrix} Y_{orig} & 0\\ 0 & -Y_{orig} \end{bmatrix} \begin{bmatrix}X_{2D}\\ Y_{2D}\end{bmatrix} +
+\begin{bmatrix} X_{orig}\\ Y_{orig}\end{bmatrix} = \begin{bmatrix} X_{sdl}\\ Y_{sdl}\end{bmatrix}$$
+
+and solve for each component,
+
+\begin{align}
+ Y_{orig} X_{2D} + X_{orig} &= X_{sdl}\\
+-Y_{orig} Y_{2D} + Y_{orig} &= Y_{sdl}
+\end{align}
+
+\end{document}

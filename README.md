@@ -139,6 +139,7 @@ a full understanding of how the library works.
 place coordinates and the way that Pnt uses coordinates is not the same way that SDL
 uses coordinates. Consider the following planes that represent the window screen:
 
+![SDL px coor conversion pg 1](./images_for_README/coor-0.png)
 
 ## 3D Perspective Projection
 ## Linear Translations and Rotations
