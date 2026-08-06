@@ -147,9 +147,10 @@ The return statements of `getX()` and `getY()` implement the component-form solu
 X_sdl and Y_sdl, respectively.
 
 ```
-return x_2D * pnt->yorig + pnt->xorig;
+return pnt->yorig * x_2D + pnt->xorig;
 ```
-return -y_2D * pnt->yorig + pnt->yorig; /* make y increase going up the screen */
+```
+return -pnt->yorig * y_2D + pnt->yorig;
 ```
 
 ## 3D Perspective Projection
