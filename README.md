@@ -153,7 +153,17 @@ return pnt->yorig * x_2D + pnt->xorig;
 return -pnt->yorig * y_2D + pnt->yorig;
 ```
 
+The window-center pixel coordinates are calculated during `Pnt` initialization in
+`initPnt()`.
+
+```
+pnt->xorig = xlen / 2;
+pnt->yorig = ylen / 2;
+```
+
 ## 3D Perspective Projection
+
+
 ## Linear Translations and Rotations
 ## Line Interpolation
 ## Going Forward
