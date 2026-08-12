@@ -9,8 +9,8 @@
 
 \section{SDL Pixel Coordinates}
 
-Let us consider a graph that represents the application window.\\
-In our example, the screen has a 16 by 9 aspect ratio with pixel\\
+Let us consider a graph that represents the application window.
+In our example, the screen has a 16 by 9 aspect ratio with pixel
 dimensions of $W=1024px, H=576px$.\\[5pt]
 
 \begin{tikzpicture}
@@ -20,14 +20,14 @@ dimensions of $W=1024px, H=576px$.\\[5pt]
 \end{tikzpicture}
 \\
 
-This is how SDL sees the window. Notice how the origin sits in the\\
-upper-left corner of the screen. Y-values go higher as we travel \\
+This is how SDL sees the window. Notice how the origin sits in the
+upper-left corner of the screen. Y-values go higher as we travel
 down the screen.\\
 
 \rule{12cm}{0.4pt}
 \\
 
-Now, let us consider the application window using our 2D coordinate\\
+Now, let us consider the application window using our 2D coordinate
 system\\
 
 \begin{tikzpicture}
@@ -39,17 +39,15 @@ system\\
 \end{tikzpicture}
 \\
 
-The origin now sits in the center of the screen, and Y-values go higher\\
-as we travel up the axis. Additionally, note the change in units.\\
-One "screen unit" is the distance between the center and the top or\\
-bottom of the screen. In this example, our screen has a $16:9$ aspect\\
-ratio, which gives our X-values the following range:\\
+The origin now sits in the center of the screen, and Y-values go higher
+as we travel up the axis. Additionally, note the change in units.
+One "screen unit" is the distance between the center and the top or
+bottom of the screen.\\
 
-$$\left\{ x \in \mathbb{R} \left| -\frac{16}{9} \leq x \leq \frac{16}{9} \right. \right\}$$
+Our X-values have the following range:\\
+
+$$\left\{ x \in \mathbb{R} \left| -\frac{W}{H} \leq x \leq \frac{W}{H} \right. \right\}$$
 \\
-
-We can replace $\frac{16}{9}$ with any other aspect ratio when working with\\
-different windows.\\
 
 \rule{12cm}{0.4pt}
 \\
@@ -82,9 +80,7 @@ $$ \begin{bmatrix} Y_{orig} & 0\\ 0 & -Y_{orig} \end{bmatrix} \begin{bmatrix}X_{
 
 and solve for each component,
 
-\begin{align}
- Y_{orig} X_{2D} + X_{orig} &= X_{sdl}\\
--Y_{orig} Y_{2D} + Y_{orig} &= Y_{sdl}
-\end{align}
+$$ Y_{orig} X_{2D} + X_{orig} = X_{sdl}$$
+$$-Y_{orig} Y_{2D} + Y_{orig} = Y_{sdl}$$
 
 \end{document}
