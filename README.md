@@ -54,9 +54,16 @@ A simple breakdown of how to setup and build your environment goes as follows:
        movement in the poll/render loop in units of TAU radians
   
   Keyboard inputs for spacial translation and rotation can be accessed and modified in
-  the `scanKeys()` function in `env.c`. 'F' is forward, 'D' is backward, 'H' is roll left,
-  'L' is roll right, 'J' is pitch up, 'K' is pitch down, 'Z' is yaw left, 'X' is yaw 
-  right.
+  the `scanKeys()` function in `env.c`. The current mapping goes as follows:
+
+  * 'F' is forward
+  * 'D' is backward 
+  * 'J' is pitch up
+  * 'K' is pitch down
+  * 'A' is yaw left
+  * 'S' is yaw right
+  * 'L' is roll left
+  * ';' is roll right.
 
   The amount of space your step movements cover in your environment over a given period
   of time is tied to the frequency of your poll/render loop. As the amount of points in 

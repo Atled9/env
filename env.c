@@ -129,28 +129,28 @@ static void scanKeys(Env *env)
 	    *(env->keys + SDL_SCANCODE_Q)) {
 		env->running = 0;
 	}
-	if (*(env->keys + SDL_SCANCODE_F)) {
+	if (*(env->keys + SDL_SCANCODE_F)) { /* forward */
 		ztrans(env->pnt, -env->unitStep);
 	} 
-	if (*(env->keys + SDL_SCANCODE_D)) {
+	if (*(env->keys + SDL_SCANCODE_D)) { /* backward */
 		ztrans(env->pnt, env->unitStep);
 	}
-	if (*(env->keys + SDL_SCANCODE_J)) {
+	if (*(env->keys + SDL_SCANCODE_J)) { /* pitch up */
 		xrot(env->pnt, env->tauStep);
 	}
-	if (*(env->keys + SDL_SCANCODE_K)) {
+	if (*(env->keys + SDL_SCANCODE_K)) { /* pitch down */
 		xrot(env->pnt, -env->tauStep);
 	}
-	if (*(env->keys + SDL_SCANCODE_Z)) {
+	if (*(env->keys + SDL_SCANCODE_A)) { /* yaw left */
 		yrot(env->pnt, env->tauStep);
 	}
-	if (*(env->keys + SDL_SCANCODE_X)) {
+	if (*(env->keys + SDL_SCANCODE_S)) { /* yaw right */
 		yrot(env->pnt, -env->tauStep);
 	}
-	if (*(env->keys + SDL_SCANCODE_H)) {
+	if (*(env->keys + SDL_SCANCODE_L)) { /* roll left */
 		zrot(env->pnt, -env->tauStep);
 	}
-	if (*(env->keys + SDL_SCANCODE_L)) {
+	if (*(env->keys + SDL_SCANCODE_SEMICOLON)) { /* roll right */
 		zrot(env->pnt, env->tauStep);
 	}
 
