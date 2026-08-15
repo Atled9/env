@@ -194,7 +194,34 @@ map the 3D coordinates of our `Vec3` array onto our 2D application window.
 ![3D perspective projection pg 15](./images_for_README/proj-14.png)
 ![3D perspective projection pg 16](./images_for_README/proj-15.png)
 
+This library implements an exclusively vertical FOV by normalizing the Y-coordinate
+component and calculating the focal length as $\cot\left( \frac{FOV}{2} \right)$. The
+FOV is taken in units of TAU radians as a parameter in `initEnv()`, which is passed
+directly to `initPnt()` as an argument, where the focal length is calculated.
 
+```
+pnt->zfl = 1.0 / tan(FOV * TAU / 2);
+```
+`Pnt` stores the value of the focal length in its struct member `zfl`. A pointer to
+an instance of `Pnt` is passed to `getX()` and `getY()` as the argument `Pnt *pnt`.
+Both functions make use of `pnt->zfl` to determine if a `Vec3` position is behind the
+view plane. If so, the coordinate component value is assigned well beyond the screen
+boundary.
+
+```
+if ((pnt->p + ind)->z < pnt->zfl) {
+    return 1e4; 
+}
+```
+If the location of a point is in front of the view plane, the 3-dimensional coordinates
+are projected onto the 2-dimensional plane using the focal length.
+
+```
+float x_2D = (pnt->p + ind)->x * pnt->zfl / (pnt->p + ind)->z;
+```
+```
+float y_2D = (pnt->p + ind)->y * pnt->zfl / (pnt->p + ind)->z;
+```
 ## Linear Translations and Rotations
 ## Line Interpolation
 ## Going Forward
