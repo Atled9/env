@@ -170,6 +170,30 @@ pnt->yorig = ylen / 2;
 
 ## 3D Perspective Projection
 
+`Pnt` holds a dynamic array of `Vec3` structs. The pointer to the first element in our
+array is struct member `p`. Each instance of `Vec3` describes the location of a point
+in $\mathbb{R}^3$ using its members `x`, `y`, and `z`. 
+
+Therefore, before we can convert 2D coordinates into pixel coordinates, we need to
+map the 3D coordinates of our `Vec3` array onto our 2D application window.
+
+![3D perspective projection pg 01](./images_for_README/proj-0.png)
+![3D perspective projection pg 02](./images_for_README/proj-1.png)
+![3D perspective projection pg 03](./images_for_README/proj-2.png)
+![3D perspective projection pg 04](./images_for_README/proj-3.png)
+![3D perspective projection pg 05](./images_for_README/proj-4.png)
+![3D perspective projection pg 06](./images_for_README/proj-5.png)
+![3D perspective projection pg 07](./images_for_README/proj-6.png)
+![3D perspective projection pg 08](./images_for_README/proj-7.png)
+![3D perspective projection pg 09](./images_for_README/proj-8.png)
+![3D perspective projection pg 10](./images_for_README/proj-9.png)
+![3D perspective projection pg 11](./images_for_README/proj-10.png)
+![3D perspective projection pg 12](./images_for_README/proj-11.png)
+![3D perspective projection pg 13](./images_for_README/proj-12.png)
+![3D perspective projection pg 14](./images_for_README/proj-13.png)
+![3D perspective projection pg 15](./images_for_README/proj-14.png)
+![3D perspective projection pg 16](./images_for_README/proj-15.png)
+
 
 ## Linear Translations and Rotations
 ## Line Interpolation

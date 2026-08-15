@@ -33,8 +33,9 @@ following plot.\\
 	zmax=5,
 	x axis line style={draw opacity=0},
 	xtick=\empty,
-	ytick={ 0,  1, 4},
-	ztick={-4, -1, 0, 1, 4}
+	ytick={0,  1},
+	yticklabels={0, $f$},
+	ztick={-1, 0, 1}
 ]
 \draw[color=gray] (0,-1,0)--(0,5,0);
 \draw[color=gray] (0,0,-5)--(0,0,5);
@@ -94,8 +95,9 @@ the yz-plane directly.\\
 	xmax=5,
 	ymin=-5,
 	ymax=5,
-	xtick={ 0, 1, 4},
-	ytick={-4,-1, 0, 1, 4}
+	xtick={ 0, 1},
+	xticklabels={0, $f$},
+	ytick={-1, 0, 1}
 ]
 \draw [color=gray] (-1,0)--(5,0);
 \draw [color=gray] (0,-5)--(0,5);
@@ -502,38 +504,341 @@ There's one final element in our projective analysis that I haven't covered yet.
 
 So far, we've treated FOV as a single angle formed at the center of projection 
 by lines pointing to the edges of our application window. However, the application, 
-or game window usually won't be a perfect square. How can we have 1 FOV for the X
-and Y components of our view plane when the width and height of the screen are
-different values? To put it simply, we can't. It is impossible to have a single angle
-at the center of projection formed by lines that intercept the edges of the view plane
-when the view plane is not square.\\
-
-There are 3 separate ways that we can handle FOV. The following list outlines our 
-approaches:
+or game window usually won't be a perfect square. This means that there are 2 FOV's for
+any given screen. There are 3 separate ways that we can handle FOV. The following 
+list outlines our approaches:
 
 \begin{itemize}
-\item Vertical FOV lock
-\item Horizontal FOV lock
-\item Anamorphic rendering
+\item Vertical FOV
+\item Horizontal FOV
+\item Split focal lengths
 \end{itemize}
 
 Each approach uses a different method to calculate the focal length. Consider 2
-projective pyramids that share the same center of projection:
+projective pyramids that share the same center of projection:\\
 
 \begin{tikzpicture}
 \begin{axis} [
-	xmin = -1,
-	xmax = 10,
-	ymin = -1,
-	ymax = 10,
-	zmin = -1,
-	zmax = 10,
-	xtick = \empty,
-	ytick = \empty,
-	ztick = \empty
+	title={Vertical and Horizontal FOV},
+	xlabel={$X$}, 
+	ylabel={$Z$}, 
+	zlabel={$Y$},
+	xmin=-8,
+	xmax=8,
+	ymin=-1,
+	ymax=5,
+	zmin=-5,
+	zmax=5,
+	xtick = {-1.778, 0, 1.778},
+	xticklabels = {$-\frac{W}{H}$, 0, $\frac{W}{H}$},
+	ytick = {0, 1, 1.778}, 
+	yticklabels = {0, $f_{Y}$, $f_{X}$}, 
+	ztick = {-1, 0, 1}, 
 ]
+
+% vertical fov
+
+\draw[color=blue] (0,0,0)--( 7.111, 4,  4);
+\draw[color=blue] (0,0,0)--(-7.111, 4,  4);
+\draw[color=blue] (0,0,0)--(-7.111, 4, -4);
+\draw[color=blue] (0,0,0)--( 7.111, 4, -4);
+
+\draw[color=blue] ( 7.111, 4,  4)--(-7.111, 4,  4);
+\draw[color=blue] (-7.111, 4,  4)--(-7.111, 4, -4);
+\draw[color=blue] (-7.111, 4, -4)--( 7.111, 4, -4);
+\draw[color=blue] ( 7.111, 4, -4)--( 7.111, 4,  4);
+
+\draw[color=blue] ( 1.778, 1,  1)--(-1.778, 1,  1);
+\draw[color=blue] (-1.778, 1,  1)--(-1.778, 1, -1);
+\draw[color=blue] (-1.778, 1, -1)--( 1.778, 1, -1);
+\draw[color=blue] ( 1.778, 1, -1)--( 1.778, 1,  1);
+
+\draw[dashed, color=blue] (0,0,0)--(0, 4,-4);
+\draw[dashed, color=blue] (0,0,0)--(0, 4, 4);
+
+% horizontal fov
+
+\draw[color=red] (0,0,0)--( 4, 4,  2.250);
+\draw[color=red] (0,0,0)--(-4, 4,  2.250);
+\draw[color=red] (0,0,0)--(-4, 4, -2.250);
+\draw[color=red] (0,0,0)--( 4, 4, -2.250);
+
+\draw[color=red] ( 4, 4, 2.250)--(-4, 4, 2.250);
+\draw[color=red] (-4, 4, 2.250)--(-4, 4, -2.250);
+\draw[color=red] (-4, 4, -2.250)--( 4, 4, -2.250);
+\draw[color=red] ( 4, 4, -2.250)--( 4, 4, 2.250);
+
+\draw[color=red] ( 1.778, 1.778,  1)--(-1.778, 1.778,  1);
+\draw[color=red] (-1.778, 1.778,  1)--(-1.778, 1.778, -1);
+\draw[color=red] (-1.778, 1.778, -1)--( 1.778, 1.778, -1);
+\draw[color=red] ( 1.778, 1.778, -1)--( 1.778, 1.778,  1);
+
+\draw[dashed, color=red] (0,0,0)--(-4, 4, 0);
+\draw[dashed, color=red] (0,0,0)--( 4, 4, 0);
 
 \end{axis}
 \end{tikzpicture}
+\\
+
+Both projection pyramids share many of the same properties. They both have the same
+center of projection. Their far planes are at the same distance along the Z-axis. Their
+view planes share the same width and height. And most importantly, their fields of view
+are \textit{technically} the same value. The blue pyramid's FOV is derived from the top
+and bottom edges of the view plane. The red pyramid's FOV is derived from the left and
+right edges of the view plane.\\
+
+The key difference lies in how we calculate the focal length when provided an FOV by 
+the graphics library user. We can consider the blue pyramid the vertical FOV projective
+figure. We can consider the red pyramid the horizontal FOV projective figure.\\
+
+\textbf{Vertical FOV:}\\
+
+Let us look at the plot above directly down the x-axis such that we see the yz-plane
+directly.\\
+
+\begin{tikzpicture}
+\begin{axis} [
+	title={Vertical and Horizontal FOV: YZ-Plane View},
+	xlabel={$Z$}, 
+	ylabel={$Y$}, 
+	xmin=-1,
+	xmax=5,
+	ymin=-5,
+	ymax=5,
+	xtick={0, 1, 1.778},
+	xticklabels={0, ${f_{Y}}$, ${f_{X}}$},
+	ytick={-1, 0, 1},
+]
+
+\draw[color=gray] (-1, 0)--(5, 0);
+\draw[color=gray] (0, -5)--(0, 5);
+\draw[dashed, color=gray] (-1, -1)--(5, -1);
+\draw[dashed, color=gray] (-1, 1)--(5, 1);
+\draw[dashed, color=gray] (1, -1)--(1, -5);
+
+% Vertical FOV 
+\draw[color=blue] (0,0)--(4,4);
+\draw[color=blue] (0,0)--(4,-4);
+\draw[color=blue] (4,4)--(4,-4);
+
+\draw[color=blue] (1,-1)--(1,1);
+
+\draw[] (0.5, 0.0) arc (0:45:0.5);
+
+\addplot[only marks, color=gray] coordinates{(0 , 0)};
+\addplot[only marks, color=gray] coordinates{(1 ,-1)};
+\addplot[only marks, color=gray] coordinates{(1 , 1)};
+\node[below left] at (axis cs: 0, 0) {$\vec{P_{proj}}$};
+\node[below left] at (axis cs: 1,-1) {$\vec{P_{bottom}}$};
+\node[above left] at (axis cs: 1, 1) {$\vec{P_{top}}$};
+
+% Horizontal FOV
+\draw[color=red] (0,0)--(4, 2.250);
+\draw[color=red] (0,0)--(4, -2.250);
+\draw[color=red] (4,2.250)--(4, -2.250);
+
+\draw[color=red] (1.778, -1)--(1.778, 1);
+
+\end{axis}
+\end{tikzpicture}
+
+Let FOV = $\mathlarger{\angle}\vec{P_{bottom}}\vec{P_{proj}}\vec{P_{top}}$ be the
+graphics library user-provided value for 3D rendering. The focal length can be
+derived as follows.
+
+$$\tan\left( \frac{FOV}{2} \right) = \frac{1}{f_{Y}} $$
+$$f_{Y} = \cot\left( \frac{FOV}{2} \right)$$\\
+
+This is the exact same expression for focal length as the one we derived earlier in
+this section. We've been analyzing projections given a vertical FOV, but we haven't
+been explicit about its exclusively vertical nature until now.\\
+
+\textbf{Horizontal FOV:}\\
+
+Let us look at the Vertical and Horizontal FOV plot directly down the y-axis such that
+we see the xz-plane directly.\\
+
+\begin{tikzpicture}
+\begin{axis} [
+	title={Vertical and Horizontal FOV: XZ-Plane View},
+	xlabel={$Z$}, 
+	ylabel={$X$}, 
+	xmin=-1,
+	xmax=5,
+	ymin=-8,
+	ymax=8,
+	xtick={0, 1, 1.778},
+	xticklabels={0, ${f_{Y}}$, ${f_{X}}$},
+	ytick={-1.778, 0, 1.778},
+	yticklabels={$-\frac{W}{H}$, 0, $\frac{W}{H}$},
+]
+
+\draw[color=gray] (-1, 0)--(5, 0);
+\draw[color=gray] (0, -8)--(0, 8);
+\draw[dashed, color=gray] (-1, -1.778)--(5, -1.778);
+\draw[dashed, color=gray] (-1, 1.778)--(5, 1.778);
+\draw[dashed, color=gray] (1.778, -1.778)--(1.778, -8);
+
+% Vertical FOV 
+\draw[color=blue] (0,0)--(4, 7.111);
+\draw[color=blue] (0,0)--(4,-7.111);
+\draw[color=blue] (4,-7.111)--(4,7.111);
+
+\draw[color=blue] (1,-1.778)--(1,1.778);
+
+
+% Horizontal FOV
+\draw[color=red] (0,0)--(4, 4);
+\draw[color=red] (0,0)--(4, -4);
+\draw[color=red] (4,-4)--(4, 4);
+
+\draw[color=red] (1.778, -1.778)--(1.778, 1.778);
+
+\draw[] (0.8889, 0.0) arc (0:45:0.8889);
+
+\addplot[only marks, color=gray] coordinates{(0 , 0)};
+\addplot[only marks, color=gray] coordinates{(1.778 ,-1.778)};
+\addplot[only marks, color=gray] coordinates{(1.778 , 1.778)};
+\node[below left]  at (axis cs: 0, 0) {$\vec{P_{proj}}$};
+\node[above right] at (axis cs: 1.778,-1.778) {$\vec{P_{left}}$};
+\node[below right] at (axis cs: 1.778, 1.778) {$\vec{P_{right}}$};
+
+\end{axis}
+\end{tikzpicture}
+
+Let FOV = $\mathlarger{\angle}\vec{P_{left}}\vec{P_{proj}}\vec{P_{right}}$ be the
+graphics library user-provided value for 3D rendering. The focal length can be
+derived as follows.
+
+$$\tan\left( \frac{FOV}{2} \right) = \frac{W}{H}\frac{1}{f_{X}} $$
+$$f_{X} = \frac{W}{H}\cot\left( \frac{FOV}{2} \right)$$\\
+
+\textbf{Split Focal Lengths:}\\
+
+For any given point $\vec{P_{3D}}$ in $\mathbb{R}^3$, we can treat the projected
+X-component as if the point is being projected onto the red view plane, and we can treat 
+the projected Y-component as if the point is being projected onto the blue view plane.\\
+
+$$ X_{2D} = \frac{X_{3D}f_{X}}{Z}, \: Y_{2D} = \frac{Y_{3D}f_{Y}}{Z}$$\\
+
+There is a tradeoff to projecting with different focal lengths. On one hand, the graphics
+library user-provided FOV will now be accurate for both X and Y components. But on the other
+hand, the geometry projected onto our window will look distorted - a square we create with
+4 equidistant verticies at the same z-value will not look like a perfect square.
+X-component values are being stretched relative to our Y-component values.
+
+\rule{12cm}{0.4pt}
+\\
+
+We can implement vertical, horizontal, and split FOV without changing how we calculate
+the focal length. Instead, we can change how we map 2D points onto our pixel coordinate
+grid.\\
+
+Let's go back to the coordinate conversion matrix that we introduced in the previous
+section.\\
+
+$$ \mathbf{C} = \begin{bmatrix}  Y_{orig} &      0    \\
+                                     0    & -Y_{orig} \end{bmatrix} $$\\
+
+Notice how this matrix normalizes the Y-component values. 1 "screen unit" is equal to
+the distance in pixels between the center and the bottom or top of our window. Therefore,
+it is perfectly acceptable to rename this coordinate conversion matrix
+$\mathbf{C_{ynorm}}$.\\
+
+We can use a different coordinate conversion matrix that normalizes our X-component
+values.\\
+
+$$ \mathbf{C_{xnorm}} = \begin{bmatrix}  X_{orig} &      0    \\
+                                     0    & -X_{orig} \end{bmatrix} $$\\
+
+Using this matrix, 1 "screen unit" is equal to the distance in pixels between the center
+and the left or right end of our window. Consider how this affects our Vertical and 
+Horizontal FOV.\\
+
+\begin{tikzpicture}
+\begin{axis} [
+	title={Vertical and Horizontal FOV: Normalized X-Coordinates},
+	xlabel={$X$}, 
+	ylabel={$Z$}, 
+	zlabel={$Y$},
+	xmin=-8,
+	xmax=8,
+	ymin=-1,
+	ymax=5,
+	zmin=-5,
+	zmax=5,
+	xtick = {-1.778, 0, 1.778},
+	xticklabels = {-1, 0, 1},
+	ytick = {0, 1, 1.778}, 
+	yticklabels = {0, $f_{Y}$, $f_{X}$}, 
+	ztick = {-1, 0, 1}, 
+	zticklabels = {$-\frac{H}{W}$, 0, $\frac{H}{W}$}, 
+]
+
+% vertical fov
+
+\draw[color=blue] (0,0,0)--( 7.111, 4,  4);
+\draw[color=blue] (0,0,0)--(-7.111, 4,  4);
+\draw[color=blue] (0,0,0)--(-7.111, 4, -4);
+\draw[color=blue] (0,0,0)--( 7.111, 4, -4);
+
+\draw[color=blue] ( 7.111, 4,  4)--(-7.111, 4,  4);
+\draw[color=blue] (-7.111, 4,  4)--(-7.111, 4, -4);
+\draw[color=blue] (-7.111, 4, -4)--( 7.111, 4, -4);
+\draw[color=blue] ( 7.111, 4, -4)--( 7.111, 4,  4);
+
+\draw[color=blue] ( 1.778, 1,  1)--(-1.778, 1,  1);
+\draw[color=blue] (-1.778, 1,  1)--(-1.778, 1, -1);
+\draw[color=blue] (-1.778, 1, -1)--( 1.778, 1, -1);
+\draw[color=blue] ( 1.778, 1, -1)--( 1.778, 1,  1);
+
+\draw[dashed, color=blue] (0,0,0)--(0, 4,-4);
+\draw[dashed, color=blue] (0,0,0)--(0, 4, 4);
+
+% horizontal fov
+
+\draw[color=red] (0,0,0)--( 4, 4,  2.250);
+\draw[color=red] (0,0,0)--(-4, 4,  2.250);
+\draw[color=red] (0,0,0)--(-4, 4, -2.250);
+\draw[color=red] (0,0,0)--( 4, 4, -2.250);
+
+\draw[color=red] ( 4, 4, 2.250)--(-4, 4, 2.250);
+\draw[color=red] (-4, 4, 2.250)--(-4, 4, -2.250);
+\draw[color=red] (-4, 4, -2.250)--( 4, 4, -2.250);
+\draw[color=red] ( 4, 4, -2.250)--( 4, 4, 2.250);
+
+\draw[color=red] ( 1.778, 1.778,  1)--(-1.778, 1.778,  1);
+\draw[color=red] (-1.778, 1.778,  1)--(-1.778, 1.778, -1);
+\draw[color=red] (-1.778, 1.778, -1)--( 1.778, 1.778, -1);
+\draw[color=red] ( 1.778, 1.778, -1)--( 1.778, 1.778,  1);
+
+\draw[dashed, color=red] (0,0,0)--(-4, 4, 0);
+\draw[dashed, color=red] (0,0,0)--( 4, 4, 0);
+
+\end{axis}
+\end{tikzpicture}
+\\
+
+The figures themselves did not change, only the coordinate system changed. Now, our focal 
+length for the horizontal FOV can written as\\
+
+$$f_{X} =\cot\left( \frac{FOV}{2} \right)\text{.}$$\\
+
+A simple algebraic proof goes as follows:\\
+
+$$f_{X} = \frac{W}{H}f_{Y}$$
+$$X_{orig} = \frac{W}{H}Y_{orig}$$\\
+
+Finally, to implement split focal lengths, we can use a coordinate conversion matrix that
+normalizes both X and Y component values.\\
+
+$$ \mathbf{C_{split}} = \begin{bmatrix}  X_{orig} &      0    \\
+                                     0    & -Y_{orig} \end{bmatrix} $$\\
+
+When using a coordinate conversion matrix to normalize the axis from which we calculate
+our focal length, the focal length value of the normalized coordinate component will 
+always be\\
+
+$$f_{norm} = \cot\left( \frac{FOV}{2} \right)\text{.}$$
 
 \end{document}
