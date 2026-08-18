@@ -1,0 +1,104 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm}
+\parindent 0px
+
+\begin{document}
+
+\setcounter{section}{2}
+\section{Transformations for 3D movement}
+
+We can break down $\vec{P_{3D}}$ into 2 states: $\vec{P_{3DI}}$ and $\vec{P_{3DF}}$.
+$\vec{P_{3DI}}$ represents the location of a point before a set of transformations,
+$\{ T_{0}, T_{1}, \ldots, T_{n} \}$, that describe its movement. $\vec{P_{3DF}}$ 
+represents the location of a point after the set of transformations.\\
+
+Let $T_{n}:\mathbb{R}^3 \rightarrow \mathbb{R}^3$.\\
+Let $T_{n}$ be of the form 
+$\left\{ T_{n}(step) \left| \vec{P_{3DF}} = 
+ \mathbf{A}\vec{P_{3DI}} + \vec{b}\right. \right\}$ \\
+
+Every point in our environment is polled at once for 1 or more of the following
+transformations $\left\{ T_{rx}(\Delta\theta), T_{ry}(\Delta\theta), T_{rz}(\Delta\theta),
+T_z(\Delta z) \right\}$ before each render cycle. The table below describes 
+the function and expression of each transformation.\\
+\\
+
+\noindent\hspace*{-2.7cm}
+\begin{tabular}{ |c|c|c|c| }
+	\hline
+	Our POV & Point Movement & $T_n$ & Expression \\
+	\hline\hline
+
+	\rule{0pt}{3.0ex} Move forward & Lower Z-component value & $T_z(-\Delta z)$ &
+	$\vec{P_{3DF}} = \mathbf{I_3}\vec{P_{3DI}} - \Delta z \hat{z}$ \\
+	\hline
+
+	\rule{0pt}{3.0ex} Move backward & Raise Z-component value & $T_z(+\Delta z)$ &
+	$\vec{P_{3DF}} = \mathbf{I_3}\vec{P_{3DI}} + \Delta z \hat{z}$ \\
+	\hline
+
+	\rule{0pt}{3.0ex} Pitch up & Rotate around x-axis counter-clockwise &
+	$T_{rx}(+\Delta\theta)$ &
+	$\vec{P_{3DF}} = \mathbf{R_x}(+\Delta\theta)\vec{P_{3DI}} + \vec{P_{proj}}$ \\
+	\hline
+
+	\rule{0pt}{3.0ex} Pitch down & Rotate around x-axis clockwise &
+	$T_{rx}(-\Delta\theta)$ &
+	$\vec{P_{3DF}} = \mathbf{R_x}(-\Delta\theta)\vec{P_{3DI}} + \vec{P_{proj}}$ \\
+	\hline
+
+	\rule{0pt}{3.0ex} Yaw left & Rotate around y-axis counter-clockwise &
+	$T_{ry}(+\Delta\theta)$ &
+	$\vec{P_{3DF}} = \mathbf{R_y}(+\Delta\theta)\vec{P_{3DI}} + \vec{P_{proj}}$ \\
+	\hline
+
+	\rule{0pt}{3.0ex} Yaw right & Rotate around y-axis clockwise &
+	$T_{ry}(-\Delta\theta)$ &
+	$\vec{P_{3DF}} = \mathbf{R_y}(-\Delta\theta)\vec{P_{3DI}} + \vec{P_{proj}}$ \\
+	\hline
+
+	\rule{0pt}{3.0ex} Roll left & Rotate around z-axis clockwise &
+	$T_{rz}(-\Delta\theta)$ &
+	$\vec{P_{3DF}} = \mathbf{R_z}(-\Delta\theta)\vec{P_{3DI}} + \vec{P_{proj}}$ \\
+	\hline
+
+	\rule{0pt}{3.0ex} Roll right & Rotate around z-axis counter-clockwise &
+	$T_{rz}(+\Delta\theta)$ &
+	$\vec{P_{3DF}} = \mathbf{R_z}(+\Delta\theta)\vec{P_{3DI}} + \vec{P_{proj}}$ \\
+	\hline
+
+\end{tabular}
+\\
+\\
+
+\textbf{Expansions:}
+$$\vec{P_{proj}} = \begin{bmatrix} 0\\ 0\\ 0 \end{bmatrix}$$
+$$\hat{z} = \begin{bmatrix} 0\\ 0\\ 1 \end{bmatrix}$$
+
+$$\mathbf{I_3} = \begin{bmatrix}
+				1 & 0 & 0 \\
+				0 & 1 & 0 \\
+				0 & 0 & 1
+		 \end{bmatrix}$$
+
+$$\mathbf{R_x}(\theta) = \begin{bmatrix}
+				        1 &        0      &       0      \\
+				        0 &  \cos(\theta) & \sin(\theta) \\
+				        0 & -\sin(\theta) & \cos(\theta)
+			\end{bmatrix}$$
+
+$$\mathbf{R_y}(\theta) = \begin{bmatrix}
+				        \cos(\theta) & 0 & -\sin(\theta) \\
+				              0      & 1 &        0	 \\
+				        \sin(\theta) & 0 &  \cos(\theta)
+			\end{bmatrix}$$
+
+$$\mathbf{R_z}(\theta) = \begin{bmatrix}
+				         \cos(\theta) & \sin(\theta) & 0 \\
+				        -\sin(\theta) & \cos(\theta) & 0 \\
+				              0       &       0      & 1
+			\end{bmatrix}$$
+
+
+\end{document}
+

@@ -8,5 +8,10 @@ proj.png: proj.pdf
 proj.pdf: proj.tex
 	pdflatex proj.tex
 
+trans.png: trans.pdf
+	convert -density 384 trans.pdf -resize 25% -alpha remove ../images_for_README/trans.png
+trans.pdf: trans.tex
+	pdflatex trans.tex
+
 clean:
 	rm *.pdf *.log *.aux 

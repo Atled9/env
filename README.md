@@ -203,7 +203,7 @@ directly to `initPnt()` as an argument, where the focal length is calculated.
 pnt->zfl = 1.0 / tan(FOV * TAU / 2);
 ```
 `Pnt` stores the value of the focal length in its struct member `zfl`. A pointer to
-an instance of `Pnt` is passed to `getX()` and `getY()` as the argument `Pnt *pnt`.
+an instance of `Pnt` is passed to `getX()` and `getY()` using the argument `Pnt *pnt`.
 Both functions make use of `pnt->zfl` to determine if a `Vec3` position is behind the
 view plane. If so, the coordinate component value is assigned well beyond the screen
 boundary.
@@ -222,7 +222,22 @@ float x_2D = (pnt->p + ind)->x * pnt->zfl / (pnt->p + ind)->z;
 ```
 float y_2D = (pnt->p + ind)->y * pnt->zfl / (pnt->p + ind)->z;
 ```
-## Linear Translations and Rotations
+## Translations and Rotations
+
+With coordinate conversion and 3D perspective projection out of the way, we are 
+free to place and move points in our 3D environment however we wish. The rest of
+the library will handle how those points are rendered.
+
+How do we move our center of projection around an array of 3D coordinates that describe
+points, lines, and geometric solids? This is a trick question. We don't move our center
+of projection at all. Instead, we move all of the points in our environment around the 
+center of projection.
+
+Examine the table below.
+
+![transformations for 3D movement pg.1](./images_for_README/trans-0.png)
+![transformations for 3D movement pg.2](./images_for_README/trans-1.png)
+
 ## Line Interpolation
 ## Going Forward
 
