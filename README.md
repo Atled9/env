@@ -246,8 +246,85 @@ stores these values as struct members.
 env->unitStep = unitStep;
 env->tauStep  = tauStep;
 ```
-During program runtime, `Env` polls all points in `Pnt` for 1 or more transformations
-on the condition of keypresses. The environment is polled in
+During program runtime, `pollEnv()` checks the program state and polls for keypresses
+by calling the private function `scanKeys()`. Keys are mapped to 3D transformations
+that apply to all points in the environment.
+
+```
+if (*(env->keys + SDL_SCANCODE_F)) { /* forward */
+        ztrans(env->pnt, -env->unitStep);
+}
+if (*(env->keys + SDL_SCANCODE_D)) { /* backward */
+        ztrans(env->pnt, env->unitStep);
+}
+if (*(env->keys + SDL_SCANCODE_J)) { /* pitch up */
+        xrot(env->pnt, env->tauStep);
+}
+if (*(env->keys + SDL_SCANCODE_K)) { /* pitch down */
+        xrot(env->pnt, -env->tauStep);
+}
+if (*(env->keys + SDL_SCANCODE_A)) { /* yaw left */
+        yrot(env->pnt, env->tauStep);
+}
+if (*(env->keys + SDL_SCANCODE_S)) { /* yaw right */
+        yrot(env->pnt, -env->tauStep);
+}
+if (*(env->keys + SDL_SCANCODE_L)) { /* roll left */
+        zrot(env->pnt, -env->tauStep);
+}
+if (*(env->keys + SDL_SCANCODE_SEMICOLON)) { /* roll right */
+        zrot(env->pnt, env->tauStep);
+}
+```
+Transformation functions are defined in `pnt.c`. All transformations make use of
+the step values stored in our `Env` struct instance.
+
+The z-translation function `ztrans()` shifts the z-coordinate value of every point
+in `Pnt`.
+
+```
+void ztrans(Pnt *pnt, float dz)
+{
+        for (int i = 0; i < pnt->size; i++) {
+                (pnt->p + i)->z += dz;
+        }
+}
+```
+The rotation functions shift all coordinate values with respect to the matricies
+$\mathbf{R_x}(\theta)$, $\mathbf{R_y}(\theta)$, and $\mathbf{R_z}(\theta)$.
+
+```
+void xrot(Pnt *pnt, float dtau)
+{
+        for (int i = 0; i < pnt->size; i++) {
+                (pnt->p + i)->y = (pnt->p + i)->y * cos(dtau*TAU) -
+                                  (pnt->p + i)->z * sin(dtau*TAU);
+
+                (pnt->p + i)->z = (pnt->p + i)->y * sin(dtau*TAU) +
+                                  (pnt->p + i)->z * cos(dtau*TAU);
+        }
+}
+void yrot(Pnt *pnt, float dtau)
+{
+        for (int i = 0; i < pnt->size; i++) {
+                (pnt->p + i)->x = (pnt->p + i)->x * cos(dtau*TAU) +
+                                  (pnt->p + i)->z * sin(dtau*TAU);
+
+                (pnt->p + i)->z = (pnt->p + i)->x * -sin(dtau*TAU) +
+                                  (pnt->p + i)->z *  cos(dtau*TAU);
+        }
+}
+void zrot(Pnt *pnt, float dtau)
+{
+        for (int i = 0; i < pnt->size; i++) {
+                (pnt->p + i)->x = (pnt->p + i)->x * cos(dtau*TAU) -
+                                  (pnt->p + i)->y * sin(dtau*TAU);
+
+                (pnt->p + i)->y = (pnt->p + i)->x * sin(dtau*TAU) +
+                                  (pnt->p + i)->y * cos(dtau*TAU);
+        }
+}
+```
 
 ## Line Interpolation
 ## Going Forward
