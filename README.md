@@ -238,6 +238,17 @@ Examine the table below.
 ![transformations for 3D movement pg.1](./images_for_README/trans-0.png)
 ![transformations for 3D movement pg.2](./images_for_README/trans-1.png)
 
+The step values for 3D translation and rotation are passed into `initEnv()` as 
+`unitStep` and `tauStep`, respectively. `initEnv()` creates an instance of `Env` and
+stores these values as struct members.
+
+```
+env->unitStep = unitStep;
+env->tauStep  = tauStep;
+```
+During program runtime, `Env` polls all points in `Pnt` for 1 or more transformations
+on the condition of keypresses. The environment is polled in
+
 ## Line Interpolation
 ## Going Forward
 
