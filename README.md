@@ -325,10 +325,94 @@ void zrot(Pnt *pnt, float dtau)
         }
 }
 ```
-
 ## Line Interpolation
+
+There are 2 ways that we can go about creating lines in SDL.
+1. Use `SDL_RenderLine()`
+2. Place points along a path using `SDL_RenderPoint()`
+
+If I went with the first option, I would have stored render data as pairs 
+of coordinates instead of single point coordinates. I choose the second option 
+because it leaves the user with flexibility to render individual points or
+create curved-line functions.
+
+`pushPnt()` in `pnt.c` dynamically adds the coordinate values of a point location 
+to the end of the `Vec3` array in our instance of `Pnt`. `env.c` gives the user
+direct access to `pushPnt()` via the function `addPoint()`.
+
+```
+void pushPnt(Pnt *pnt, float x, float y, float z)
+{
+        if (pnt->size == pnt->capacity) {
+                pnt->p = realloc(pnt->p, 2 * pnt->capacity * sizeof(Vec3));
+                pnt->capacity *= 2;
+        }
+        (pnt->p + pnt->size)->x = x;
+        (pnt->p + pnt->size)->y = y;
+        (pnt->p + pnt->size)->z = z;
+        (pnt->size)++;
+}
+```
+`pushLne()` in `pnt.c` builds off the function `pushPnt()`. First, `pushLne()`
+calculates the distance in pixels between 2 point coordinates.
+
+```
+float dx = x1 - x0;
+float dy = y1 - y0;
+float dz = z1 - z0;
+
+float length = sqrt(dx*dx + dy*dy + dz*dz);
+float pixlen = length * pnt->yorig;
+```
+Then the pixel length is used to create step values for each component that
+define the displacement between each individual point.
+
+```
+float xstep = dx / pixlen;
+float ystep = dy / pixlen;
+float zstep = dz / pixlen;
+
+for (float i = 0; i < pixlen; i++) {
+
+        pushPnt(pnt, x0, y0, z0);
+        x0 += xstep;
+        y0 += ystep;
+        z0 += zstep;
+}
+```
+The step values shown above ensure that points forming a line are close enough
+together to prevent visual separation as the line approaches the view plane. `env.c`
+gives the user direct access to `pushLne()` via the function `addLine()`.
+
+The function `addCube()` in `env.c` builds off the function `pushLne()` to draw out
+a cube. The user provides a coordinate location and the side length. The cube's 
+front-bottom-left vertex is placed at the user-specified position.
+
+```
+void addCube(Env *env, float x, float y, float z, float len)
+{
+        /* front face */
+        pushLne(env->pnt, x    , y    , z, x+len, y    , z);
+        pushLne(env->pnt, x+len, y    , z, x+len, y+len, z);
+        pushLne(env->pnt, x+len, y+len, z, x    , y+len, z);
+        pushLne(env->pnt, x    , y+len, z, x    , y    , z);
+
+        /* back face */
+        pushLne(env->pnt, x    , y    , z+len, x+len, y    , z+len);
+        pushLne(env->pnt, x+len, y    , z+len, x+len, y+len, z+len);
+        pushLne(env->pnt, x+len, y+len, z+len, x    , y+len, z+len);
+        pushLne(env->pnt, x    , y+len, z+len, x    , y    , z+len);
+
+        /* connecting lines */
+        pushLne(env->pnt, x    , y    , z, x    , y    , z+len);
+        pushLne(env->pnt, x+len, y    , z, x+len, y    , z+len);
+        pushLne(env->pnt, x+len, y+len, z, x+len, y+len, z+len);
+        pushLne(env->pnt, x    , y+len, z, x    , y+len, z+len);
+}
+```
 ## Going Forward
 
-
-
-
+* Implement a far clipping plane to prevent an infinite render distance
+* Use homogeneous coordinates for conversion, projection, and 3D movement
+* Render surfaces as triangles and implement surface occlusion
+* Implement light sources and surface lighting
