@@ -412,7 +412,8 @@ void addCube(Env *env, float x, float y, float z, float len)
 ```
 ## Going Forward
 
-* Implement a far clipping plane to prevent an infinite render distance
+* Implement a far clipping plane to prevent an infinite render distance, which can
+  hamper performance in large environments
 * Use homogeneous coordinates for conversion, projection, and 3D movement
 * Render surfaces as triangles and implement surface occlusion
 * Implement light sources and surface lighting
